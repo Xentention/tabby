@@ -83,11 +83,6 @@ export class TabbySuggestionsProvider implements CompletionItemProvider {
       return Promise.resolve(completions);
     }
 
-    resolveCompletionItem(item: CompletionItem, token: CancellationToken): ProviderResult<CompletionItem> {
-      //throw new Error('Method not implemented.');
-      return item;
-   }
-    
     
     private toCompletions(tabbyCompletion: CompletionResponse | null, range: Range): CompletionItem[] {
         return (

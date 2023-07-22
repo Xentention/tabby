@@ -119,6 +119,11 @@
           "default": true,
           "description": "Enable Tabby code completion or not."
         },
+        "tabby.usage.showInlineCompletions": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show inline completions instead of a menu."
+        },
         "tabby.usage.anonymousUsageTracking": {
           "type": "boolean",
           "default": false,
