@@ -103,6 +103,14 @@ const emitEvent: Command = {
     agent().postEvent(event);
   },
 };
+/*
+const acceptSuggestion: Command = {
+  command: "tabby.suggestion.accept",
+  callback: () => {
+    commands.executeCommand("editor.action.inlineSuggest.commit");
+  },
+};
+*/
 
 const openAuthPage: Command = {
   command: "tabby.openAuthPage",

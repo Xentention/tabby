@@ -43,10 +43,19 @@ export class TabbyCodeActionProvider implements CodeActionProvider {
   //@ts-ignore because ASYNC and PROMISE
   //prettier-ignore
   public async provideCodeActions(document: TextDocument,  rangeParameter: Range | Selection, context: CodeActionContext, token: CancellationToken): ProviderResult<(CodeAction[] | CodeActionList)> {
-      //throw new Error('Method not implemented.');
+    console.debug("Inside provide code action, text: " + document.getText()); 
+    //throw new Error('Method not implemented.');
       const emptyResponse = Promise.resolve([] as CodeAction[]);
       if (!this.enabled) {
         console.debug("Extension not enabled, skipping.");
+        return emptyResponse;
+      }  
+      
+      const currentTimestamp = Date.now();
+      this.latestTimestamp = currentTimestamp;
+  
+      await sleep(this.suggestionDelay);
+      if (currentTimestamp < this.latestTimestamp) {
         return emptyResponse;
       }
 
@@ -56,20 +65,16 @@ export class TabbyCodeActionProvider implements CodeActionProvider {
         return emptyResponse;
       }
 
-      const currentTimestamp = Date.now();
-      this.latestTimestamp = currentTimestamp;
-  
-      await sleep(this.suggestionDelay);
-      if (currentTimestamp < this.latestTimestamp) {
-        return emptyResponse;
-      }
+    
 
       if (this.pendingCompletion) {
         this.pendingCompletion.cancel();
       }
 
+      console.debug("before request");
+
       const range: Range = rangeParameter;
-      const position: Position = range.start;
+      const position: Position = range.end;
 
       const request = {
         filepath: document.uri.fsPath,
@@ -79,6 +84,7 @@ export class TabbyCodeActionProvider implements CodeActionProvider {
         maxPrefixLines: this.maxPrefixLines,
         maxSuffixLines: this.maxSuffixLines,
       };
+      console.debug("before get completion");
       this.pendingCompletion = agent().getCompletions(request);
 
       const completion = await this.pendingCompletion.catch((_: Error) => {
@@ -87,13 +93,17 @@ export class TabbyCodeActionProvider implements CodeActionProvider {
       this.pendingCompletion = null;
 
       const completions = this.toCodeActions(completion, range);
+      console.debug("before return");
       return Promise.resolve(completions);
   }
 
   private toCodeActions(tabbyCompletion: CompletionResponse | null, range: Range): CodeAction[] {
+    console.debug("Inside toCodeAction:");
+
     //throw new Error('Method not implemented.');
     return (
       tabbyCompletion?.choices?.map((choice: any) => {
+        console.debug("choice text: " + choice.text);
         let event = {
           type: "select",
           completion_id: tabbyCompletion.id,
