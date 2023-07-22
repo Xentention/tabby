@@ -9,6 +9,10 @@ import { TabbySuggestionsProvider } from "./TabbySuggestionsProvider";
 import { TabbyCompletionProvider } from "./TabbyCompletionProvider";
 import { tabbyStatusBarItem } from "./statusBarItem";
 
+/**
+ * Provides a CompletionItemProvider configuration to dinamically change
+ * configuration according to the user's settings
+ */
 export class ProviderConfig {
     private tabbyCompletionItemProvider: Disposable;
 
