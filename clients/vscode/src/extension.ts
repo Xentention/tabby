@@ -3,7 +3,7 @@
 import { ExtensionContext, languages, workspace } from "vscode";
 import { createAgentInstance } from "./agent";
 import { tabbyCommands } from "./commands";
-import { ProviderConfig } from "./ProviderConfig";
+import { updateTabbyProviderChoice } from "./ProviderConfig";
 import { TabbySuggestionsProvider } from "./TabbySuggestionsProvider";
 import { TabbyCompletionProvider } from "./TabbyCompletionProvider";
 import { tabbyStatusBarItem } from "./statusBarItem";
@@ -14,12 +14,11 @@ export async function activate(context: ExtensionContext) {
   console.debug("Activating Tabby extension1", new Date());
   await createAgentInstance(context);
 
-  let completionsProvider = new ProviderConfig;
-  completionsProvider.updateCompletionItemProvider(context);
+  updateTabbyProviderChoice(context);
 
   workspace.onDidChangeConfiguration(event => {
     if(event.affectsConfiguration("tabby")) {
-      completionsProvider.updateCompletionItemProvider(context);
+      updateTabbyProviderChoice(context);
     }
   });
   

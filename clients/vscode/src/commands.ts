@@ -99,7 +99,6 @@ const gettingStarted: Command = {
 const emitEvent: Command = {
   command: "tabby.emitEvent",
   callback: (event) => {
-    console.debug("Emit Event: ", event);
     agent().postEvent(event);
   },
 };

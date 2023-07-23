@@ -60,7 +60,6 @@ export class TabbyCompletionProvider implements InlineCompletionItemProvider {
       this.pendingCompletion.cancel();
     }
 
-    console.debug("text: " + document.getText.toString + "\nposition: " + position.character);
     const request = {
       filepath: document.uri.fsPath,
       language: document.languageId,  // https://code.visualstudio.com/docs/languages/identifiers
@@ -88,7 +87,6 @@ export class TabbyCompletionProvider implements InlineCompletionItemProvider {
   private toInlineCompletions(tabbyCompletion: CompletionResponse | null, range: Range): InlineCompletionItem[] {
     return (
       tabbyCompletion?.choices?.map((choice: any) => {
-        console.debug("choice text: " + choice.text);
         let event = {
           type: "select",
           completion_id: tabbyCompletion.id,

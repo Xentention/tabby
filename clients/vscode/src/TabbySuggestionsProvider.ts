@@ -82,12 +82,10 @@ export class TabbySuggestionsProvider implements CompletionItemProvider {
       const completions = this.toCompletions(completion, replaceRange);
       return Promise.resolve(completions);
     }
-
     
     private toCompletions(tabbyCompletion: CompletionResponse | null, range: Range): CompletionItem[] {
         return (
             tabbyCompletion?.choices?.map((choice: any) => {
-              console.debug("choice text: " + choice.text);
               let event = {
                 type: "select",
                 completion_id: tabbyCompletion.id,
